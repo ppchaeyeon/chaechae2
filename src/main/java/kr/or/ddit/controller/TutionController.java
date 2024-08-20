@@ -75,7 +75,7 @@ public class TutionController {
 
 
 
-	// 등록금전체납부 창 조회(학생) - 조회창 ajax
+	// 등록금전체납부 알람창 조회(학생) - 조회창 ajax
 	@ResponseBody
 	@PostMapping("/tutionallview")
 	public TuitionVO tuitionallview(Principal principal, @RequestBody String test) {
@@ -88,7 +88,7 @@ public class TutionController {
 		return tuitionVO;
 	}
 
-	// 등록금 전체납부 진행
+	// 등록금 전체납부 진행 + db 저장
 	@ResponseBody
 	@PostMapping("/tuitionallpay")
 	public ResponseEntity<String> tuitionallpay(Principal principal, @RequestBody TuitionVO tuitionVO) {
