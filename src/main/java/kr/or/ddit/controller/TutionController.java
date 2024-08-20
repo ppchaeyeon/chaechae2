@@ -43,14 +43,15 @@ public class TutionController {
 	@Autowired
 	TutionMapper tutionmapper;
 
-	// 등록금전체납부(학생) - 조회용
+	// 등록금전체납부(학생) - 조회용, 조회데이터를 뷰에 전달하기 위해 model 사용
 	@GetMapping("/tutionall")
 	public String tutionall(Principal principal, Model model) {
 
-		log.info("등록금 전체 납부 페이지에 왔다");
+		log.info("등록금 전체 납부 페이지");
 		String stNo = principal.getName();
 
 		try {
+			
 			DivPayTermVO divTerm = this.tutionmapper.fwsysdate();
 			String startdate = divTerm.getDivPayStDate();
 			String enddate = divTerm.getDivPayEnDate();
@@ -87,14 +88,13 @@ public class TutionController {
 		return tuitionVO;
 	}
 
-	//
 	// 등록금 전체납부 진행
 	@ResponseBody
 	@PostMapping("/tuitionallpay")
 	public ResponseEntity<String> tuitionallpay(Principal principal, @RequestBody TuitionVO tuitionVO) {
 
 		int result = 0;
-		log.info("등록금 내는 ajax에 왔다");
+		log.info("등록금 내는 ajax");
 		log.info("tuitionVO :{} ", tuitionVO);
 		String stNo = principal.getName();
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -140,7 +140,7 @@ public class TutionController {
 		String stNo = principal.getName();
 		int result = 0;
 
-		log.info("등록금 납부 내역에 왔다");
+		log.info("학생 등록금 납부 내역");
 
 		// 등록금 납부 내역
 		List<TuitionListVO> TuitionList = this.tutionmapper.payList(stNo);
@@ -164,11 +164,9 @@ public class TutionController {
 	@PostMapping("/tutiondetail")
 	public TuitionListVO paydetail(@RequestBody Map<String, Object> map, Principal principal, Model model) {
 
-		log.info("등록금 상세 모달에 왔다");
+		log.info("등록금 상세 모달");
 		String stNo = principal.getName();
-//		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("stNo", stNo);
-		// 가져온 map은 : {semester=2023, year=2, seq=0, stNo=A006}
 		log.info("가져온 map은 : " + map);
 
 		TuitionListVO listdetail = this.tutionmapper.paydetail(map);
@@ -177,7 +175,9 @@ public class TutionController {
 
 		return listdetail;
 	}
+	
 
+	// 장학금 납부 페이지 이동
 	@GetMapping("/scolarship")
 	public String scolarship(Principal principal, Model model) {
 
@@ -188,7 +188,8 @@ public class TutionController {
 	@ResponseBody
 	@PostMapping("/scolarship2")
 	public List<ScolarshipHistoryVO> scolarshipajax(Principal principal, Model model) {
-		log.info("장학금 전체 내역 ajax에 왔다");
+		
+		log.info("장학금 전체 내역 ajax");
 		String stNo = principal.getName();
 
 		// 한 학생의 장학금 내역 리스트(전체)
@@ -200,6 +201,7 @@ public class TutionController {
 		for (ScolarshipHistoryVO scolarShipHistoryVOList2 : scolarShipHistoryVOList) {
 			result3++;
 		}
+		
 		log.info("result3 : " + result3);
 		log.info("scolarShipHistoryVOList : " + scolarShipHistoryVOList);
 
@@ -221,7 +223,7 @@ public class TutionController {
 	public List<ScolarshipHistoryVO> scolarcon(Principal principal,
 			@RequestBody ScolarshipHistoryVO scolarshipHistoryVO, Model model) {
 
-		log.info("장학금 조건 조회에 왔다");
+		log.info("장학금 조건 조회");
 		log.info("scolarshipHistoryVO ajax : " + scolarshipHistoryVO);
 		String stNo = principal.getName();
 		scolarshipHistoryVO.setStNo(stNo);
@@ -243,11 +245,12 @@ public class TutionController {
 		return scolarShipConditionVOList;
 	}
 
-	// 등록금고지(관리자)
+	
+	// 등록금고지(관리자) 페이지 이동
 	@GetMapping("/manConfirmation")
 	public String tutionadd(Principal principal, Model model) {
 
-		log.info("관리자 등록금 고지 페이지에 왔다");
+		log.info("관리자 등록금 고지 페이지");
 		// 로그인 안되었다면 처리
 		if (principal == null) {
 			return "redirect:/login";
@@ -263,7 +266,7 @@ public class TutionController {
 
 	}
 
-	// 과마다 select 해서 보여주는 list ajax
+	// 등록금고지 페이지, 고지내역 과마다 select 해서 보여주는 list ajax
 	@ResponseBody
 	@PostMapping("/deptlist")
 	public ArticlePage<DeptTuitionPayVO> deptlist(Principal principal, @RequestBody ComDetCodeVO comDetCodeVO,
@@ -293,7 +296,7 @@ public class TutionController {
 		return new ArticlePage<DeptTuitionPayVO>(retotal, currentPage, 10, deptlist, comDetCodeVO.getComDetCodeName(), queGubun);
 	}
 	
-
+	// 등록금 고지하는 ajax
 	@ResponseBody
 	@PostMapping("/inserttui")
 	public ResponseEntity<String> inserttui(Principal principal, @RequestBody DeptTuitionPayVO deptTuitionPayVO) {
@@ -328,13 +331,14 @@ public class TutionController {
 		return entity;
 		}
 
-	// 납부내역(관리자)
+	
+	// 등록금 납부내역(관리자) 이동
 	@GetMapping("/tutionNotice")
 	public String tutionlistadmin() {
 		return "tution/tutionlistadmin";
 	}
 
-	// 학과별 납부내역 (관리자)
+	// 학과별 납부내역 (관리자) 조회 ajax
 	@ResponseBody
 	@PostMapping("/tutionNoticeList")
 	public ArticlePage<TuitionListVO> deptlist2(Principal principal, @RequestBody ComDetCodeVO comDetCodeVO,
