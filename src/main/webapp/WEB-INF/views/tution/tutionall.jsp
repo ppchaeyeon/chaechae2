@@ -1,28 +1,25 @@
 <%@page import="java.util.Date"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!-- 포트원 결제 -->
 <!DOCTYPE html>
 <html>
 <head>
-<link
-	href="https://hangeul.pstatic.net/hangeul_static/css/nanum-square-neo.css"
-	rel="stylesheet">
+<link href="https://hangeul.pstatic.net/hangeul_static/css/nanum-square-neo.css" rel="stylesheet">
 <link rel="stylesheet" href="/resources/css/sweetalert2.min.css">
 <script type="text/javascript" src="/resources/js/jquery.min.js"></script>
 <!-- 포트원 결제 -->
 <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
 <!-- jQuery -->
-<script type="text/javascript"
-	src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <!-- iamport.payment.js -->
-<script type="text/javascript"
-	src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
+<script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+
 <style type="text/css">
+
 * {
 	font-family: 'NanumSquareNeo';
 }
@@ -47,6 +44,7 @@ td {
 	color: black;
 	text-align: center;
 }
+
 .noticeBox {
 	background-color: white;
     border: 1px solid #ced4da;
@@ -84,8 +82,7 @@ td {
 	<h6 style="display: inline-block">기간 입니다.</h6>
 		<div class="card">
 			<div class="card-body table-responsive p-0">
-				<table class="table table-head-fixed text-nowrap"
-					style="border: 3px; height: 100px">
+				<table class="table table-head-fixed text-nowrap" style="border: 3px; height: 100px">
 					<thead>
 						<tr style="color:black;">
 							<th align="center">년도</th>
@@ -101,16 +98,16 @@ td {
 							<td>${tuitionVO.semester}학기</td>
 							<td>${tuitionVO.divPayTermVO.divPayStDate}~
 								${tuitionVO.divPayTermVO.divPayEnDate}</td>
-							<td style="text-align: right;"><fmt:formatNumber value="${tuitionVO.tuiCost}"
-									pattern="#,###"></fmt:formatNumber>원</td>
+							<td style="text-align: right;">
+							<fmt:formatNumber value="${tuitionVO.tuiCost}" pattern="#,###"></fmt:formatNumber>원
+							</td>
 							<c:if test="${tuitionVO.tuiPayYn eq 'Y'}">
-								<td style="color: blue">납부완료</td>
+							<td style="color: blue">납부완료</td>
 							</c:if>
 							<c:if test="${tuitionVO.tuiPayYn eq 'N'}">
-<!-- 								<td id="nowpay" onclick="nowpay()" style="color: red; cursor:pointer"> -->
-								<td>
-									<button onclick="nowpay()" class="btn btn-outline-danger">납부하기</button>
-								</td>
+							<td>
+							<button onclick="nowpay()" class="btn btn-outline-danger">납부하기</button>
+							</td>
 							</c:if>
 						</tr>
 					</tbody>
@@ -121,6 +118,7 @@ td {
 
 <script type="text/javascript">
 
+// 납부 진행
 function nowpay(){
 
 	let scolar = 0;
@@ -134,7 +132,7 @@ function nowpay(){
 	}
 	
 
-	
+		// 납부 알람창 조회>출력
 		$.ajax({
 			
 		url:"/tution/tutionallview",
@@ -153,6 +151,7 @@ function nowpay(){
 			year = result.year;
 			semester = result.semester;
 			console.log("scolar : " + scolar);
+			// 카카오페이 납부 + db 저장용
 			let data = {
 				"semester" : semester,
 				"year" : year,
@@ -161,11 +160,7 @@ function nowpay(){
 				"realpay" : realpay	
 					
 			}
-			// 완납
-			// 현재 등록금 전체에 대한 정보 ${tuitionVO.tuiCost}
-			// 장학금액 (등록금차감) 에 대한 정보 ${tuitionVO.scolAmount}
-			// 내야할 금액 : 등록금 - 장학금
-
+				// 정보 출력시 성공한 값 대입하여 가져옴
 			     Swal.fire({
 			            title: '등록금 납부를 진행하시겠습니까?',
 			            html: `<br/>
@@ -203,7 +198,7 @@ function nowpay(){
 			            if (result.isConfirmed) {
 			            	
 			            	// 카카오페이 결제 실행
-							payment(data);
+					payment(data);
 			            }
 
        				})
@@ -268,7 +263,7 @@ function payment(data){
     	 				
     					}
     		
-    	 			// AJAX 실패
+    	 			// db 저장 AJAX 실패
     			else {
     				Swal.fire({
       				title: '등록금 납부 실패.',         // Alert 제목
@@ -290,7 +285,7 @@ function payment(data){
   				icon: 'error',                         // Alert 타입
 				});	
         
-          //      alert(`error${response.status}\n결제요청 실패되었습니다. 다시 진행해주세요`);
+
       	 	}
     	}
     )
