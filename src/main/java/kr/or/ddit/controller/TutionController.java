@@ -44,7 +44,6 @@ public class TutionController {
 	TutionMapper tutionmapper;
 
 	// 등록금전체납부(학생) - 조회용
-	// 요청URI : /tution/tutionpay
 	@GetMapping("/tutionall")
 	public String tutionall(Principal principal, Model model) {
 
