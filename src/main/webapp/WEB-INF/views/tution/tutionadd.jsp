@@ -13,18 +13,8 @@ let locationHref = window.location.href;
 $(function () {
 
 
-    // 학과 선택 시 게시판 ajax
-// 	$("#seldept").change(function(){
 
-// 		var comDetCodeName = $("#seldept").val();
-// 		console.log("셀렉트 값 : " + comDetCodeName);
-
-		
-// 		// 리스트 ajax
-// 		getList(comDetCodeName,1);
-// 	})
-	
-		// 모달창 단과대학 선택시 학과 출력
+// 모달창 단과대학 선택시 학과 출력
     $('select[id="funsel1"] ').on('change', function()  {
         let arrType = getAgreeType();
         let optionType = $(this).parents('#mysel').find($('select[id="funsel2"]'));
@@ -62,7 +52,7 @@ $(function () {
         }        
     });
 	
-	// 단과대학 선택시 학과 출력 해용
+// 단과대학 선택시 학과 출력 해용
     $('select[id="selectSearch"] ').on('change', function()  {
         let arrType = getAgreeType();
         console.log("arrType : ", arrType)
@@ -209,7 +199,7 @@ function getList(comDetCodeName,currentPage,queGubun) {
 	
 	//아작나써유..(피)씨다타써...
 	$.ajax({
-		url: "/tution/deptlist", //ajax용 url 변경
+		url: "/tution/deptlist", 
 		contentType:"application/json;charset=utf-8",
 		data:JSON.stringify(data),
 		type:"post",
@@ -218,8 +208,7 @@ function getList(comDetCodeName,currentPage,queGubun) {
             xhr.setRequestHeader("${_csrf.headerName}","${_csrf.token}");
         },
 		success:function(result){
-			console.log("result.content : ", result.content);
-			console.log("result 페이징 : " , result.pagingArea)
+
 			let str = "";
 			
 			if(result.content.length == 0) {
@@ -244,13 +233,7 @@ function getList(comDetCodeName,currentPage,queGubun) {
 			str+="<tbody id='trShow'>";	
 			
 			$.each(result.content, function(idx, DeptTuitionPayVO){
-// 				str += `<tr name="trHref" onclick="location.href='/commonNotice/detail?menuId=annNotIce&comNotNo=\${CommonNoticeVO.comNotNo}'" style="cursor:pointer">
-// 				<td class="textCenter">\${CommonNoticeVO.rn}</td>
-// 				<td class="textCenter">\${CommonNoticeVO.comGubun}</td>
-// 				<td>\${CommonNoticeVO.comNotName}</td>
-// 				<td class="textCenter">\${CommonNoticeVO.userInfoVOList.userName}</td>
-// 				<td class="textCenter">\${CommonNoticeVO.comFirstDate}</td>
-// 				<td class="textCenter">\${CommonNoticeVO.comNotViews}</td>`;
+
 				str+= "<tr>";
 				str+= "<td class='textCenter'>"+DeptTuitionPayVO.rnum+"</td>";
 				str+= "<td class='textCenter'>"+DeptTuitionPayVO.comDetCodeName+"</td>";
@@ -266,17 +249,13 @@ function getList(comDetCodeName,currentPage,queGubun) {
 			str+= "</tbody>";
 			str+= "</table>";
 			str+= "</div>";
-//			str+= "</div>";
-//			str+= "</div>";
 			str+= "<br>";
 			
 			$("#paging").html(result.pagingArea);
 
 			$("#thislist").html(str);
 			
-// 			$(".clsPagingArea").html(result.pagingArea);
-			
-// 			$("#trShow").html(str);
+
 		}
 	});
 }
@@ -432,7 +411,6 @@ height: 40px
 	<br><br><br><br><br><br>
 	<h1 style="text-align: center;">학과를<br> 
 	선택해주세요.</h1></div>
-<!-- 	<div id="line1" style="background-color: #e3e6f0; height: 3px"> -->
 	<br><br>
 	</div><br>
 	<div class="row clsPagingArea" id="paging" style="margin-top: -20px; margin-left: 650px; margin: auto;"></div>
