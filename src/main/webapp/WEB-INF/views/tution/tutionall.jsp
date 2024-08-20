@@ -59,11 +59,9 @@ td {
 <body>
 	<h3>등록금 전체 납부</h3>
 
-<!-- 	<div class="card-body" style="width: 80%"> -->
+
 	<div class="container-fluid col-9">
 		<div class="card card-light card-outline noticeBox">
-<!-- 			<div class="card-body" style="border-width: 3px;"> -->
-<!-- 			<div class="card-body col-11" style="border-width: 3px; width: 80%"> -->
 			<div class="card-body table-responsive p-0">
 				<strong>
 					<p>
@@ -82,9 +80,6 @@ td {
 	<h6 style="display: inline-block; margin-left: 20px">> 오늘 날짜는 ${sysYear}</h6>
 	<c:if test="${term eq 0}">
 		<h6 style="color: blue; display: inline-block">전체 납부</h6>
-	</c:if>
-	<c:if test="${term ne 0}">
-		<h6 style="color: red; display: inline-block">분할 납부</h6>
 	</c:if>
 	<h6 style="display: inline-block">기간 입니다.</h6>
 		<div class="card">
@@ -138,7 +133,7 @@ function nowpay(){
 		"test" : 1
 	}
 	
-//	scolarshipHistoryVO.scolarPay
+
 	
 		$.ajax({
 			
@@ -152,8 +147,6 @@ function nowpay(){
 		},
 		success:function(result){
 			console.log("result 결과 : ", result);
-// 			scolar = result.scolAmount;
-//			scolar = result.scolarshipHistoryVO.scolarPay;
 			scolar = result.scolarPay;
 			pay = result.tuiCost;
 			realpay = pay - scolar;
@@ -168,7 +161,6 @@ function nowpay(){
 				"realpay" : realpay	
 					
 			}
-//			alert("클릭 테스트")
 			// 완납
 			// 현재 등록금 전체에 대한 정보 ${tuitionVO.tuiCost}
 			// 장학금액 (등록금차감) 에 대한 정보 ${tuitionVO.scolAmount}
@@ -228,7 +220,7 @@ function payment(data){
      pg: "kakaopay",
         pay_method: "card",
         name: "대덕인재대학교 등록금",
-//       amount: data.realpay, // 결제할 금액
+//      amount: data.realpay, // 결제할 금액
         amount: 1, // 결제할 금액
         m_redirect_url: "/tution/tutionall", // 모바일 결제후 리다이렉트될 주소!!
     }, async function (rsp) { // 카카오페이 진행
@@ -238,9 +230,9 @@ function payment(data){
     
     		"year" : data.year,
     		"semester" : data.semester,
-			"tuiCost"	: data.pay, // 등록금총액
-			"scolAmount" : data.scolar, // 장학금
-			"realpay" : data.realpay	// 실납부
+		"tuiCost" : data.pay, // 등록금총액
+		"scolAmount" : data.scolar, // 장학금
+		"realpay" : data.realpay	// 실납부
     		
     	}
     
@@ -249,7 +241,7 @@ function payment(data){
     	// 카카오페이 성공시
     	if (rsp.success) {
     		
-    		console.log("카카오 페이 성공했다 아직 ajax 실행 전")
+    		console.log("카카오 페이 성공, ajax 실행 전")
     		
     		// db 저장
     		$.ajax({
