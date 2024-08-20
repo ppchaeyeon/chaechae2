@@ -46,7 +46,7 @@ td {
 
 <script type="text/javascript">
 
-console.log("스크립트")
+
 function checkOnlyOne(element) {
   
   const checkboxes 
